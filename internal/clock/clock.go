@@ -20,6 +20,6 @@ func CreateClock(d time.Duration) clock {
 	return clock{int64(hr), int64(min), int64(sec)}
 }
 
-func (t *clock) Printf() string {
+func (t *clock) Sprintf() string {
 	return fmt.Sprintf("%02d:%02d:%02d", t.hr, t.min, t.sec)
 }

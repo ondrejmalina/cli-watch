@@ -20,18 +20,20 @@ func Run(userInput cli.UserInput) {
 	ticker := time.NewTicker(tick)
 	defer ticker.Stop()
 	done := make(chan bool)
+
 	go func() {
 		time.Sleep(dur)
 		done <- true
 	}()
+
 	for {
 		select {
 		case <-done:
-			fmt.Println("Done!")
+			fmt.Println("\nDone!")
 			return
 		case <-ticker.C:
 			cl := clock.CreateClock(dur)
-			cl.Printf()
+			fmt.Printf("\r%v", cl.Sprintf())
 			dur -= tick
 		}
 	}
