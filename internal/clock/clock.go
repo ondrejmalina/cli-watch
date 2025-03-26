@@ -5,11 +5,27 @@ import (
 	"time"
 )
 
+var (
+	Timer  *time.Timer
+	Ticker *time.Ticker
+)
+
+func StartTime(dur time.Duration, tick time.Duration) {
+	Timer = time.NewTimer(dur)
+	Ticker = time.NewTicker(tick)
+}
+
+func StopTime() {
+	Timer.Stop()
+	Ticker.Stop()
+}
+
 type clock struct {
 	hr, min, sec int64
 }
 
-func CreateClock(d time.Duration) clock {
+// TODO: Rename
+func Create(d time.Duration) clock {
 	d = d.Round(time.Second)
 	hr := d / time.Hour
 	d -= hr * time.Hour

@@ -17,24 +17,24 @@ func Run(userInput cli.UserInput) {
 	}
 
 	tick := time.Second
-	ticker := time.NewTicker(tick)
-	defer ticker.Stop()
-	done := make(chan bool)
+	clock.StartTime(dur, tick)
 
-	go func() {
-		time.Sleep(dur)
-		done <- true
-	}()
+	cl := clock.Create(dur)
+	fmt.Printf("\r%v", cl.Sprintf())
 
 	for {
 		select {
-		case <-done:
-			fmt.Println("\nDone!")
-			return
-		case <-ticker.C:
-			cl := clock.CreateClock(dur)
-			fmt.Printf("\r%v", cl.Sprintf())
+		case <-clock.Ticker.C:
 			dur -= tick
+			// NOTE: Put into goroutine?
+			cl := clock.Create(dur)
+			fmt.Printf("\r%v", cl.Sprintf())
+		case <-clock.Timer.C:
+			dur -= tick
+			cl := clock.Create(dur)
+			fmt.Printf("\r%v", cl.Sprintf())
+			return
+
 		}
 	}
 }
