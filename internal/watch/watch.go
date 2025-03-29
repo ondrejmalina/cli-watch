@@ -5,6 +5,7 @@ import (
 	"log"
 	"time"
 
+	"github.com/eiannone/keyboard"
 	"github.com/ondrejmalina/cli-watch/internal/cli"
 	"github.com/ondrejmalina/cli-watch/internal/clock"
 )
@@ -16,6 +17,20 @@ func Run(userInput cli.UserInput) {
 		log.Fatalf("Cannot parse input time %v", userInput.Argument)
 	}
 
+	keyC := make(chan rune, 1)
+
+	// NOTE: Is this still running after pressing a key?
+	// Why is the for loop necessary?
+	go func() {
+		for {
+			r, _, err := keyboard.GetSingleKey()
+			if err != nil {
+				log.Fatal("Invalid keyboard input")
+			}
+			keyC <- r
+		}
+	}()
+
 	tick := time.Second
 	clock.StartTime(dur, tick)
 
@@ -24,6 +39,13 @@ func Run(userInput cli.UserInput) {
 
 	for {
 		select {
+		case k := <-keyC:
+			switch k {
+			case 's':
+				clock.StopTime()
+			case 'p':
+				clock.StartTime(dur, tick)
+			}
 		case <-clock.Ticker.C:
 			dur -= tick
 			// NOTE: Put into goroutine?
