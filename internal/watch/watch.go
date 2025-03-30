@@ -17,17 +17,25 @@ func Run(userInput cli.UserInput) {
 		log.Fatalf("Cannot parse input time %v", userInput.Argument)
 	}
 
-	keyC := make(chan rune, 1)
+	keyC := make(chan any, 1)
 
 	// NOTE: Is this still running after pressing a key?
 	// Why is the for loop necessary?
+	// TODO: This function has to be ended somewhere
+	// TODO: Separate this function from this code
 	go func() {
 		for {
-			r, _, err := keyboard.GetSingleKey()
+			r, k, err := keyboard.GetSingleKey()
 			if err != nil {
 				log.Fatal("Invalid keyboard input")
 			}
-			keyC <- r
+			switch k {
+			case 0:
+				keyC <- r
+			default:
+				keyC <- k
+			}
+
 		}
 	}()
 
@@ -45,8 +53,9 @@ func Run(userInput cli.UserInput) {
 				clock.StopTime()
 			case 'r':
 				clock.StartTime(dur, tick)
-			default:
-				fmt.Print(string(k))
+			case keyboard.KeyEsc, keyboard.KeyCtrlC:
+				fmt.Printf("\rBye!")
+				return
 			}
 		case <-clock.Ticker.C:
 			dur -= tick
