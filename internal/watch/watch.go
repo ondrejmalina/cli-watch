@@ -41,10 +41,12 @@ func Run(userInput cli.UserInput) {
 		select {
 		case k := <-keyC:
 			switch k {
-			case 's':
-				clock.StopTime()
 			case 'p':
+				clock.StopTime()
+			case 'r':
 				clock.StartTime(dur, tick)
+			default:
+				fmt.Print(string(k))
 			}
 		case <-clock.Ticker.C:
 			dur -= tick
