@@ -1,4 +1,4 @@
-package watch
+package stopwatch
 
 import (
 	"fmt"
@@ -12,7 +12,7 @@ import (
 
 func Run(userInput cli.UserInput) {
 
-	dur, err := time.ParseDuration(userInput.Argument)
+	dur, err := time.ParseDuration("99h")
 	if err != nil {
 		log.Fatalf("Cannot parse input time %v", userInput.Argument)
 	}
@@ -22,6 +22,7 @@ func Run(userInput cli.UserInput) {
 
 	tick := time.Second
 	clock.StartTime(dur, tick)
+	dur = 0
 
 	cl := clock.Create(dur)
 	fmt.Printf("\r%v", cl.Sprintf())
@@ -39,16 +40,9 @@ func Run(userInput cli.UserInput) {
 				return
 			}
 		case <-clock.Ticker.C:
-			dur -= tick
-			// NOTE: Put into goroutine?
+			dur += tick
 			cl := clock.Create(dur)
 			fmt.Printf("\r%v", cl.Sprintf())
-		case <-clock.Timer.C:
-			dur -= tick
-			cl := clock.Create(dur)
-			fmt.Printf("\r%v", cl.Sprintf())
-			return
-
 		}
 	}
 }

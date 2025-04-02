@@ -3,6 +3,8 @@ package cli
 import (
 	"flag"
 	"log"
+
+	"github.com/eiannone/keyboard"
 )
 
 type UserInput struct {
@@ -27,4 +29,20 @@ func ParseInput() UserInput {
 
 	Inp := readInput(command, argument)
 	return Inp
+}
+
+func KeyboardInput(keyC chan any) {
+
+	for {
+		r, k, err := keyboard.GetSingleKey()
+		if err != nil {
+			log.Fatal("Invalid keyboard input")
+		}
+		switch k {
+		case 0:
+			keyC <- r
+		default:
+			keyC <- k
+		}
+	}
 }
