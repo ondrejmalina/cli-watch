@@ -20,6 +20,14 @@ func StopTime() {
 	Ticker.Stop()
 }
 
+func StartTicking(tick time.Duration) {
+	Ticker = time.NewTicker(tick)
+}
+
+func StopTicking() {
+	Ticker.Stop()
+}
+
 type clock struct {
 	hr, min, sec int64
 }

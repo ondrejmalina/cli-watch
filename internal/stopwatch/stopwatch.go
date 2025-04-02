@@ -2,7 +2,6 @@ package stopwatch
 
 import (
 	"fmt"
-	"log"
 	"time"
 
 	"github.com/eiannone/keyboard"
@@ -12,18 +11,13 @@ import (
 
 func Run(userInput cli.UserInput) {
 
-	dur, err := time.ParseDuration("99h")
-	if err != nil {
-		log.Fatalf("Cannot parse input time %v", userInput.Argument)
-	}
-
 	keyC := make(chan any, 1)
 	go cli.KeyboardInput(keyC)
 
 	tick := time.Second
-	clock.StartTime(dur, tick)
-	dur = 0
+	clock.StartTicking(tick)
 
+	dur := time.Duration(0)
 	cl := clock.Create(dur)
 	fmt.Printf("\r%v", cl.Sprintf())
 
@@ -32,11 +26,12 @@ func Run(userInput cli.UserInput) {
 		case k := <-keyC:
 			switch k {
 			case 'p':
-				clock.StopTime()
+				clock.StopTicking()
 			case 'r':
-				clock.StartTime(dur, tick)
+				clock.StartTicking(tick)
 			case keyboard.KeyEsc, keyboard.KeyCtrlC:
-				fmt.Printf("\rBye!")
+				cl := clock.Create(dur)
+				fmt.Printf("\rThe stopwatch was ticking for %v", cl.Sprintf())
 				return
 			}
 		case <-clock.Ticker.C:
