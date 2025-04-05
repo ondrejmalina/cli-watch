@@ -21,32 +21,30 @@ func Run(userInput cli.UserInput) {
 	go cli.KeyboardInput(keyC)
 
 	tick := time.Second
-	clock.StartTime(dur, tick)
+	clk := clock.CreateClock()
 
-	cl := clock.Create(dur)
-	fmt.Printf("\r%v", cl.Sprintf())
+	clk.StartTickerTimer(tick, dur)
+	fmt.Printf("\r%v", clk.FmtDuration(dur))
 
 	for {
 		select {
 		case k := <-keyC:
 			switch k {
 			case 'p':
-				clock.StopTime()
+				clk.StopTickerTimer()
 			case 'r':
-				clock.StartTime(dur, tick)
+				clk.StartTickerTimer(tick, dur)
 			case keyboard.KeyEsc, keyboard.KeyCtrlC:
 				fmt.Printf("\rBye!")
 				return
 			}
-		case <-clock.Ticker.C:
+		case <-clk.Ticker.C:
 			dur -= tick
-			// NOTE: Put into goroutine?
-			cl := clock.Create(dur)
-			fmt.Printf("\r%v", cl.Sprintf())
-		case <-clock.Timer.C:
+			fmt.Printf("\r%v", clk.FmtDuration(dur))
+		case <-clk.Timer.C:
 			dur -= tick
-			cl := clock.Create(dur)
-			fmt.Printf("\r%v", cl.Sprintf())
+			fmt.Printf("\r%v", clk.FmtDuration(dur))
+			fmt.Print("\rDone!")
 			return
 
 		}
