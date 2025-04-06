@@ -1,4 +1,4 @@
-package watch
+package timer
 
 import (
 	"fmt"
@@ -35,7 +35,7 @@ func Run(userInput cli.UserInput) {
 			case 'r':
 				clk.StartTickerTimer(tick, dur)
 			case keyboard.KeyEsc, keyboard.KeyCtrlC:
-				fmt.Printf("\rBye!")
+				fmt.Printf("\r\033[KBye!\n")
 				return
 			}
 		case <-clk.Ticker.C:
@@ -44,7 +44,7 @@ func Run(userInput cli.UserInput) {
 		case <-clk.Timer.C:
 			dur -= tick
 			fmt.Printf("\r%v", clk.FmtDuration(dur))
-			fmt.Print("\rDone!")
+			fmt.Print("\r\033[KDone!\n")
 			return
 
 		}

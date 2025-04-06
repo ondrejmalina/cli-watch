@@ -5,7 +5,7 @@ import (
 
 	"github.com/ondrejmalina/cli-watch/internal/cli"
 	"github.com/ondrejmalina/cli-watch/internal/stopwatch"
-	"github.com/ondrejmalina/cli-watch/internal/watch"
+	"github.com/ondrejmalina/cli-watch/internal/timer"
 )
 
 // Main driving function of the module.
@@ -14,8 +14,8 @@ func Execute() error {
 	userInput := cli.ParseInput()
 
 	switch userInput.Command {
-	case "watch":
-		watch.Run(userInput)
+	case "timer":
+		timer.Run(userInput)
 	case "stopwatch":
 		stopwatch.Run(userInput)
 	default:

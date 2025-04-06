@@ -2,29 +2,51 @@ package cli
 
 import (
 	"flag"
+	"fmt"
 	"log"
+	"os"
 
 	"github.com/eiannone/keyboard"
 )
+
+func printHelp() {
+	help := `
+Usage: cli-watch [command] [golang time fmt]
+
+Commands:
+  - timer [golang time fmt]: start a timer
+  - stopwatch: start a stopwatch
+
+Controls:
+  - p: pause running watch
+  - r: resume paused watch
+  - esc: stop watch
+
+Examples:
+  - cli-watch timer 2m30s
+  - cli-watch stopwatch
+`
+	fmt.Print(help)
+}
 
 type UserInput struct {
 	Command, Argument string
 }
 
-func readInput(cmd string, arg string) UserInput {
-	inp := UserInput{cmd, arg}
-	return inp
-}
-
 func ParseInput() UserInput {
-
+	flag.Usage = printHelp
 	flag.Parse()
 
-	command := flag.Arg(0)
-	argument := flag.Arg(1)
+	cmd := flag.Arg(0)
+	if cmd == "" {
+		printHelp()
+		os.Exit(0)
+	}
 
-	input := readInput(command, argument)
-	return input
+	return UserInput{
+		Command:  flag.Arg(0),
+		Argument: flag.Arg(1),
+	}
 }
 
 func KeyboardInput(keyC chan any) {

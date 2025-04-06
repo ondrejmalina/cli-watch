@@ -11,6 +11,10 @@ import (
 
 func Run(userInput cli.UserInput) {
 
+	if userInput.Argument != "" {
+		fmt.Printf("Ignoring time input %v\n", userInput.Argument)
+	}
+
 	keyC := make(chan any, 1)
 	go cli.KeyboardInput(keyC)
 
@@ -30,7 +34,7 @@ func Run(userInput cli.UserInput) {
 			case 'r':
 				clk.StartTicker(tick)
 			case keyboard.KeyEsc, keyboard.KeyCtrlC:
-				fmt.Printf("\rThe stopwatch was ticking for %v",
+				fmt.Printf("\rThe stopwatch was ticking for %v\n",
 					clk.FmtDuration(dur))
 				return
 			}
