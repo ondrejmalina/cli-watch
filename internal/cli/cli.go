@@ -23,8 +23,8 @@ func ParseInput() UserInput {
 	command := flag.Arg(0)
 	argument := flag.Arg(1)
 
-	Inp := readInput(command, argument)
-	return Inp
+	input := readInput(command, argument)
+	return input
 }
 
 func KeyboardInput(keyC chan any) {
@@ -32,7 +32,7 @@ func KeyboardInput(keyC chan any) {
 	for {
 		r, k, err := keyboard.GetSingleKey()
 		if err != nil {
-			log.Fatal("Invalid keyboard input")
+			log.Fatalf("Error reading keyboard input: %v", err)
 		}
 		switch k {
 		case 0:

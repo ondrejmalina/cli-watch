@@ -30,7 +30,8 @@ func Run(userInput cli.UserInput) {
 			case 'r':
 				clk.StartTicker(tick)
 			case keyboard.KeyEsc, keyboard.KeyCtrlC:
-				fmt.Printf("\rThe stopwatch was ticking for %v", clk.FmtDuration(dur))
+				fmt.Printf("\rThe stopwatch was ticking for %v",
+					clk.FmtDuration(dur))
 				return
 			}
 		case <-clk.Ticker.C:

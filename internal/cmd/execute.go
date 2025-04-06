@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"log"
+	"fmt"
 
 	"github.com/ondrejmalina/cli-watch/internal/cli"
 	"github.com/ondrejmalina/cli-watch/internal/stopwatch"
@@ -9,7 +9,7 @@ import (
 )
 
 // Main driving function of the module.
-func Execute() {
+func Execute() error {
 
 	userInput := cli.ParseInput()
 
@@ -19,6 +19,7 @@ func Execute() {
 	case "stopwatch":
 		stopwatch.Run(userInput)
 	default:
-		log.Fatalf("Unknown command %v", userInput.Command)
+		return fmt.Errorf("Unknown command %v", userInput.Command)
 	}
+	return nil
 }
