@@ -21,4 +21,4 @@ cli-watch stopwatch
 ## Key bindings
 - `p`: Pause
 - `r`: Resume
-- `Esc / Ctrl+C`: Stop and exit.
+- `Esc / Ctrl+C`: Stop and exit
