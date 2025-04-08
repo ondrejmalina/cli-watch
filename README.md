@@ -1,8 +1,8 @@
-# cli-watch
+# Command-line watch tool
 A simple, lightweight command-line watch tool.
 <img title="Timer" alt="Timer" src="timer.png">
 
-Features
+## Features
 - Timer: Count down from a specified duration (in Go time format).
 - Stopwatch: Count up from zero.
 
