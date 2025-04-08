@@ -28,17 +28,8 @@ func (c *Clock) StartTickerTimer(tickDuration time.Duration, timeDuration time.D
 }
 
 func (c *Clock) StopTickerTimer() {
-	if c.Ticker != nil {
-		c.Ticker.Stop()
-	}
-	if c.Timer != nil {
-		if !c.Timer.Stop() {
-			select {
-			case <-c.Timer.C: // Drain the channel if timer already fired
-			default:
-			}
-		}
-	}
+	c.Ticker.Stop()
+	c.Timer.Stop()
 }
 
 func (c *Clock) FmtDuration(d time.Duration) string {

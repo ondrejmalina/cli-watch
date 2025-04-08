@@ -8,7 +8,6 @@ import (
 	"github.com/ondrejmalina/cli-watch/internal/timer"
 )
 
-// Main driving function of the module.
 func Execute() error {
 
 	userInput := cli.ParseInput()

@@ -43,7 +43,6 @@ func Run(userInput cli.UserInput) {
 			fmt.Printf("\r%v", clk.FmtDuration(dur))
 		case <-clk.Timer.C:
 			dur -= tick
-			fmt.Printf("\r%v", clk.FmtDuration(dur))
 			fmt.Print("\r\033[KDone!\n")
 			return
 
