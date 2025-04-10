@@ -8,7 +8,7 @@ A simple, lightweight command-line watch tool.
 
 ## Install
 ```bash
-go install https://github.com/ondrejmalina/cli-watch@latest
+go install github.com/ondrejmalina/cli-watch@latest
 ```
 
 ## Usage
